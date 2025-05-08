@@ -1,83 +1,99 @@
 "use client";
-
+import "./globals.css";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+export default function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  
+  const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage(''); // Clear previous messages
+  // Validate email using regex
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-    // Input validation
-    if (!username || !password) {
-      setMessage('Username and password are required');
+  // Handle login logic
+  const handleLogin = async () => {
+    setError(""); // Reset error on each submit
+
+    // Validate email
+    if (!email || !validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Validate password
+    if (!password) {
+      setError("Please enter your password.");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage('Login successful!');
+      // Simulate API call or backend validation here
+      const isLoginSuccessful = true; // Replace with actual login API call
+      if (isLoginSuccessful) {
+        router.push("/app/dashboard"); // Navigate to dashboard after successful login
       } else {
-        setMessage(data.message || 'Invalid username or password');
+        setError("Invalid email or password.");
       }
     } catch (err) {
-      setMessage('Network error. Please try again later.');
+      setError("An error occurred during login. Please try again.");
     }
   };
 
+  // Handle signup redirection
+  const handleSignUp = () => {
+    router.push("/signup"); // Redirect to sign-up page
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-full max-w-sm"
-      >
-        <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
-        {message && <p className={`mb-4 ${message.includes('successful') ? 'text-green-500' : 'text-red-500'}`}>{message}</p>}
-        <div className="mb-4">
-          <label className="block text-gray-700">Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            placeholder="Enter your username"
-            required
+    <div className="login-container"> {/* Apply CSS class from globals.css */}
+      <h1 className="login-title">Student Login</h1>
+      <div className="login-underline" />
+
+      {error && <p className="login-error">{error}</p>} {/* Display error message */}
+
+      <div className="login-form">
+        <div className="login-inputWrapper">
+          <Input
+            type="email"
+            placeholder="Email Account"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="login-input"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700">Password</label>
-          <input
+
+        <div className="login-inputWrapper">
+          <Input
             type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            placeholder="Enter your password"
-            required
+            className="login-input"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-        >
+
+        <div className="login-forgotPassword">
+          <a href="#">Forgot Password? Click Here!</a>
+        </div>
+      </div>
+
+      <div className="login-buttonGroup">
+        <Button variant="outline" className="signup-button" onClick={handleSignUp}>
+          Sign Up
+        </Button>
+        <Button className="login-Button" onClick={handleLogin}>
           Login
-        </button>
-      </form>
+        </Button>
+      </div>
     </div>
   );
 }
-
-export default App;
