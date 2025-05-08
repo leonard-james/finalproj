@@ -1,5 +1,5 @@
 "use client";
-import 'tailwindcss/tailwind.css'; // Import Tailwind CSS styles
+
 
 import React, { useState } from 'react';
 
