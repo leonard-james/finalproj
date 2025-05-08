@@ -54,45 +54,64 @@ export default function App() {
   };
 
   return (
-    <div className="login-container"> {/* Apply CSS class from globals.css */}
-      <h1 className="login-title">Student Login</h1>
-      <div className="login-underline" />
-
-      {error && <p className="login-error">{error}</p>} {/* Display error message */}
-
-      <div className="login-form">
-        <div className="login-inputWrapper">
-          <Input
-            type="email"
-            placeholder="Email Account"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="login-input"
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="flex w-full max-w-5xl bg-white rounded-lg shadow-lg overflow-hidden">
+        {/* Left Side - Image */}
+        <div className="hidden md:block w-1/2">
+          <img
+            src="/app/instagang.jpg" // Replace with your image path
+            alt="Showcase"
+            className="w-full h-full object-cover"
           />
         </div>
 
-        <div className="login-inputWrapper">
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="login-input"
-          />
+        {/* Right Side - Login Form */}
+        <div className="w-full md:w-1/2 p-8">
+          <div className="max-w-sm mx-auto">
+            <h1 className="text-2xl font-bold mb-6 text-center text-black">InstaGang</h1>
+            {error && (
+              <p className="mb-4 text-red-500 text-center">{error}</p>
+            )}
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Email</label>
+              <Input
+                type="email"
+                placeholder="Phone number, username, or email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="login-input placeholder:text-black placeholder:opacity-70"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Password</label>
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="login-input placeholder:text-black placeholder:opacity-70"
+              />
+            </div>
+            <Button
+              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+              onClick={handleLogin}
+            >
+              Log in
+            </Button>
+            <div className="text-center my-4 text-gray-500">OR</div>
+            <Button
+              className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800"
+            >
+              Log in with Facebook
+            </Button>
+            <div className="text-center mt-4">
+              <a href="#" className="text-blue-500 text-sm">Forgot password?</a>
+            </div>
+            <div className="text-center mt-6 text-gray-500">
+              Don't have an account? <a href="#" className="text-blue-500">Sign up</a>
+            </div>
+          </div>
         </div>
-
-        <div className="login-forgotPassword">
-          <a href="#">Forgot Password? Click Here!</a>
-        </div>
-      </div>
-
-      <div className="login-buttonGroup">
-        <Button variant="outline" className="signup-button" onClick={handleSignUp}>
-          Sign Up
-        </Button>
-        <Button className="login-Button" onClick={handleLogin}>
-          Login
-        </Button>
       </div>
     </div>
   );
